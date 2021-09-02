@@ -87,8 +87,7 @@ void SystemInit(void) {
   BL_WR_REG(PDS_BASE, PDS_INT, tmpVal);
 
   tmpVal = BL_RD_REG(PDS_BASE, PDS_GPIO_INT);
-  tmpVal = BL_SET_REG_BITS_VAL(tmpVal, PDS_GPIO_INT_MODE,
-                               PDS_AON_GPIO_INT_TRIGGER_ASYNC_FALLING_EDGE);
+
   BL_WR_REG(PDS_BASE, PDS_GPIO_INT, tmpVal);
 
   /* GLB_Set_EM_Sel(GLB_EM_0KB); */

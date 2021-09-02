@@ -89,10 +89,10 @@ pFunc __Interrupt_Handlers[IRQn_LAST] = {0};
 
 void Trap_Handler(void) {
 #if 0
-    unsigned long cause;
-    unsigned long epc;
-    unsigned long tval;
-    uint8_t isecall = 0;
+  unsigned long cause;
+  unsigned long epc;
+  unsigned long tval;
+  uint8_t isecall = 0;
 
     MSG("Trap_Handler\r\n");
 
@@ -168,6 +168,7 @@ void Interrupt_Handler_Register(IRQn_Type irq, pFunc interruptFun) {
 }
 
 void Interrupt_Handler(void) {
+#if 0
   pFunc interruptFun;
   uint32_t num = 0;
   volatile uint32_t ulMEPC = 0UL, ulMCAUSE = 0UL;
@@ -176,7 +177,7 @@ void Interrupt_Handler(void) {
   function was called. */
   __asm volatile("csrr %0, mepc" : "=r"(ulMEPC));
   __asm volatile("csrr %0, mcause" : "=r"(ulMCAUSE));
-#if 0
+
   if ((ulMCAUSE & 0x80000000) == 0) {
     /*Exception*/
     MSG("Exception should not be here\r\n");

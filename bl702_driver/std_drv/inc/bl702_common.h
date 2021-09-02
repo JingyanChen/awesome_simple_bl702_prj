@@ -15,6 +15,38 @@
  *  @{
  */
 
+/**
+ * @brief Error type definition
+ */
+typedef enum {
+  SUCCESS = 0,
+  ERROR = 1,
+  TIMEOUT = 2,
+  INVALID = 3, /* invalid arguments */
+  NORESC = 4   /* no resource or resource temperary unavailable */
+} BL_Err_Type;
+
+/**
+ * @brief Functional type definition
+ */
+typedef enum {
+  DISABLE = 0,
+  ENABLE = 1,
+} BL_Fun_Type;
+
+/**
+ * @brief Status type definition
+ */
+typedef enum {
+  RESET = 0,
+  SET = 1,
+} BL_Sts_Type;
+
+/**
+ * @brief Mask type definition
+ */
+typedef enum { UNMASK = 0, MASK = 1 } BL_Mask_Type;
+
 /*@} end of group COMMON_Public_Types */
 
 /** @defgroup  COMMON_Public_Constants
@@ -39,63 +71,37 @@
  *  @{
  */
 
-/*@} end of group DRIVER_Public_Macro */
-
-/** @defgroup DRIVER_Public_FunctionDeclaration
- *  @brief DRIVER functions declaration
- *  @{
- */
+#define ARCH_Delay_MS BL702_Delay_MS
 
 /**
- * @brief Error type definition
+ * @brief Null Type definition
  */
-typedef enum {
-    SUCCESS = 0,
-    ERROR = 1,
-    TIMEOUT = 2,
-    INVALID = 3, /* invalid arguments */
-    NORESC = 4   /* no resource or resource temperary unavailable */
-} BL_Err_Type;
+#ifndef NULL
+#define NULL 0
+#endif
 
 /**
- * @brief Functional type definition
+ * @brief Debug definition
  */
-typedef enum {
-    DISABLE = 0,
-    ENABLE = 1,
-} BL_Fun_Type;
+//#define DEBUG   1
 
-/**
- * @brief Status type definition
- */
-typedef enum {
-    RESET = 0,
-    SET = 1,
-} BL_Sts_Type;
-
-/**
- * @brief Mask type definition
- */
-typedef enum {
-    UNMASK = 0,
-    MASK = 1
-} BL_Mask_Type;
+#ifdef DEBUG
+void check_failed(uint8_t *file, uint32_t line);
+#define CHECK_PARAM(expr)                                                      \
+  ((expr) ? (void)0 : check_failed((uint8_t *)__FILE__, __LINE__))
+#else
+#define CHECK_PARAM(expr) ((void)0)
+#endif /* DEBUG */
 
 /**
  * @brief Logical status Type definition
  */
-typedef enum {
-    LOGIC_LO = 0,
-    LOGIC_HI = !LOGIC_LO
-} LogicalStatus;
+typedef enum { LOGIC_LO = 0, LOGIC_HI = !LOGIC_LO } LogicalStatus;
 
 /**
  * @brief Active status Type definition
  */
-typedef enum {
-    DEACTIVE = 0,
-    ACTIVE = !DEACTIVE
-} ActiveStatus;
+typedef enum { DEACTIVE = 0, ACTIVE = !DEACTIVE } ActiveStatus;
 
 /**
  *  @brief Interrupt callback function type
@@ -103,15 +109,28 @@ typedef enum {
 typedef void(intCallback_Type)(void);
 typedef void (*pFunc)(void);
 
+/*@} end of group DRIVER_Public_Macro */
+
+/** @defgroup DRIVER_Public_FunctionDeclaration
+ *  @brief DRIVER functions declaration
+ *  @{
+ */
+
 #define ARCH_Delay_US BL702_Delay_US
 #define ARCH_Delay_MS BL702_Delay_MS
-#define arch_delay_us BL702_Delay_US
-#define arch_delay_ms BL702_Delay_MS
 
 void Interrupt_Handler_Register(IRQn_Type irq, pFunc interruptFun);
 void ASM_Delay_Us(uint32_t core, uint32_t cnt);
 void BL702_Delay_US(uint32_t cnt);
 void BL702_Delay_MS(uint32_t cnt);
+void *BL702_MemCpy(void *dst, const void *src, uint32_t n);
+uint32_t *BL702_MemCpy4(uint32_t *dst, const uint32_t *src, uint32_t n);
+void *BL702_MemCpy_Fast(void *pdst, const void *psrc, uint32_t n);
+void *ARCH_MemCpy_Fast(void *pdst, const void *psrc, uint32_t n);
+void *BL702_MemSet(void *s, uint8_t c, uint32_t n);
+uint32_t *BL702_MemSet4(uint32_t *dst, const uint32_t val, uint32_t n);
+int BL702_MemCmp(const void *s1, const void *s2, uint32_t n);
+
 /*@} end of group DRIVER_COMMON  */
 
 #endif /* __BL702_COMMON_H__ */

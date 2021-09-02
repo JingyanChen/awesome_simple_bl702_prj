@@ -114,7 +114,10 @@ build/helloworld.o:helloworld.c
 helloworld: build/helloworld.o stddriver riscv_core
 	riscv64-unknown-elf-gcc build/helloworld.o build/bl702_driver/std_drv/src/bl702_common.o build/bl702_driver/std_drv/src/bl702_glb.o build/bl702_driver/std_drv/src/bl702_uart.o build/startup/interrupt.o build/startup/system_bl702.o build/startup/entry.o build/startup/start_load.o -Wl,--cref -Wl,--gc-sections -nostartfiles -lc -lm -mabi=ilp32f -g3 -fms-extensions -ffunction-sections -fdata-sections -Wall -Wchar-subscripts -Wformat -Wuninitialized -Winit-self -Wignored-qualifiers -Wswitch-default -Wunused -Wundef -std=c99 -march=rv32imafc -Wl,-Map=build/hello.map -Tbl702_driver/bl702_flash.ld -o hello.elf
 	riscv64-unknown-elf-objcopy -O binary hello.elf hello.bin
+
+all: helloworld
+
 clean:
 	rm -rf build
-
+	rm -f hello.bin hello.elf
 .PHONY: basic_riscv_env helloworld
