@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "bl702_glb.h": "c",
+        "bl702_uart.h": "c",
+        "bl702_common.h": "c",
+        "bl702.h": "c",
+        "system_bl702.h": "c"
+    }
+}
